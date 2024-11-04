@@ -22,10 +22,10 @@ public class MediatecaScreen extends JFrame {
         mainPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbcMain = new GridBagConstraints();
 
+        JPanel propertiesPanel = new JPanel();
 
-        SearchResourceComponent searchResourcePanel =  new SearchResourceComponent();
+        SearchResourceComponent searchResourcePanel =  new SearchResourceComponent(propertiesPanel);
         BookPropertiesComponent bookFormPanel =  new BookPropertiesComponent();
-        ResourceTypeComponent selectResourceType =  new ResourceTypeComponent();
 
         gbcMain.gridx = 0;
         gbcMain.gridy = 0;
@@ -37,9 +37,7 @@ public class MediatecaScreen extends JFrame {
         gbcMain.insets = new Insets(5, 5, 5, 5);
         mainPanel.add(searchResourcePanel, gbcMain);
         gbcMain.gridy++;
-        mainPanel.add(selectResourceType, gbcMain);
-        gbcMain.gridy++;
-        mainPanel.add(bookFormPanel, gbcMain);
+        mainPanel.add(propertiesPanel, gbcMain);
 
 
         //Sscreens
