@@ -17,7 +17,6 @@ public class InsertResourcesService {
     Connection con;
 
     public InsertResourcesService() {
-        this.initConnection();
     }
 
     private void initConnection(){
@@ -113,19 +112,20 @@ public class InsertResourcesService {
               newId = this.executeMetadataStatements(materialMetadata.getTitle(),"dvd","DVD");
           break;
       }
-
       return  newId;
     };
 
     private Integer executeMetadataStatements(String title, String resourceType, String internalPrefix){
         Integer newId = 0;
+        initConnection();
+        String metadataStatement = "insert into material_metadata(title, material_type, internal_id) values(?,?, '');";
+        String setInternalIdStatement = "update material_metadata set internal_id = ? where id = ?;";
+
+        PreparedStatement preparedInternalIdStatement = null;
+        PreparedStatement preparedStatement = null;
 
         try {
-            String metadataStatement = "insert into material_metadata(title, material_type, internal_id) values(?,?, '');";
-            String setInternalIdStatement = "update material_metadata set internal_id = ? where id = ?;";
 
-            PreparedStatement preparedInternalIdStatement = null;
-            PreparedStatement preparedStatement = null;
             preparedStatement = this.con.prepareStatement(metadataStatement, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, title);
             preparedStatement.setString(2, resourceType);
@@ -150,6 +150,10 @@ public class InsertResourcesService {
 
         }catch (SQLException e){
             logger.error(e.getMessage());
+        }finally {
+            DatabaseConnection.close(this.con);
+            DatabaseConnection.close(preparedStatement);
+            DatabaseConnection.close(preparedInternalIdStatement);
         }
         return  newId;
     }

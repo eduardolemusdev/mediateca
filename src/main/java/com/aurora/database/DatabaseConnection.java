@@ -22,14 +22,13 @@ public class DatabaseConnection {
             driver = (Driver) jdbcDriverClass.newInstance();
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             }catch (SQLException e){
-                System.out.println(e.getMessage());
-                e.printStackTrace();
+               logger.error(e);
             } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
+                logger.error(e);
             } catch (InstantiationException e) {
-                throw new RuntimeException(e);
+                logger.error(e);
             } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
+                logger.error(e);
             }
         }
         logger.info("Connection established...ok.");
